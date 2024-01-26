@@ -1,7 +1,10 @@
-import { FaSearch, FaShoppingCart, FaRegUserCircle } from "react-icons/fa";
+import { FaSearch, FaShoppingCart, FaRegUserCircle , FaSearchDollar } from "react-icons/fa";
 import { FaBars, FaXmark, FaTrash } from "react-icons/fa6";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import FormLogin from "./FormLogin"
+import Modal from "./Modal";
+import FormRegister from "./FormRegister";
 
 const Navbar = () => {
     const [isClicked, setIsClicked] = useState(false);
@@ -10,6 +13,8 @@ const Navbar = () => {
         "invisible opacity-0 top[calc(100%+40px)]"
     );
     const [shopButton, setShopButton] = useState(false);
+    const [isSearch , setIsSerach] = useState(false);
+    const [isSearchBar  , setIsSearchBar] = useState('invisible opacity-0 top-[calc(100%+20px)]');
 
     const togglereNavbar = () => {
         if (isNavMobile == "h-[0px]") {
@@ -24,7 +29,8 @@ const Navbar = () => {
         setIsNavMobile("h-[0px]");
         setIsClicked(false);
     };
-    // ====== Show Basket ======
+
+    // ====== Show Cart ======
     const funShowBasket = () => {
         if (shopButton) {
             setShowBasket("invisible opacity-0 top-[calc(100%+50px)]");
@@ -34,6 +40,35 @@ const Navbar = () => {
             setShopButton(true);
         }
     };
+    // ========= Show Search bar ===========
+    const funcShowSearchBar = () => {
+        if (isSearch) {
+            setIsSearchBar('invisible opacity-0 top-[calc(100%+40px)]');
+            setIsSerach(false);
+        } else {
+            setIsSearchBar("visible opacity-1 top-[calc(100%+20px)]");
+            setIsSerach(true);
+        }
+    };
+    // ============ Modal =========
+    const [isModal , setIsModal] = useState(false);
+    const [isLogin , setIsLogin] = useState(false);
+    
+    const togglerLogin = () => {
+        setIsModal(!isModal)
+        setIsLogin(true);
+    }
+    const togllerRegister = () => {
+        setIsModal(!isModal)
+        setIsLogin(false);
+    }
+
+    
+    const closeModal = () => {
+        if (isModal) {
+            setIsModal(false);
+        }
+    }
     return (
         <div>
             <div>
@@ -65,7 +100,7 @@ const Navbar = () => {
                                     className="text-[25px] font-bold"
                                 >
                                     SHOP.
-                                    <span className="text-red-500">MA</span>
+                                    <span className="text-orange-500">MA</span>
                                 </Link>
                             </h1>
                         </div>
@@ -74,6 +109,7 @@ const Navbar = () => {
                         <div
                             className={`absolute top-[100%] overflow-hidden left-0 transition-height duration-300 ease-in-out ${isNavMobile} bg-white shadow-md w-full z-10 md:hidden`}
                         >
+                        {/* ============ NAVBAR MOBILE ============== */}
                             <div className="container mx-auto w-[80%]">
                                 <ul className="py-5">
                                     <li className="mx-2 py-3">
@@ -146,23 +182,37 @@ const Navbar = () => {
                                 </ul>
                             </div>
                         </div>
+
                         {/* ===== Icons === */}
                         <ul className="flex items-center">
-                            <li className="">
-                                <FaSearch size={24} />
+                            <li className="relative">
+                                <button className="block hover:text-red-500 transition-all duration-150 ease-linear" onClick={funcShowSearchBar}>
+                                {isSearch ?  <FaXmark size={20} /> : <FaSearch size={20} />}
+                                </button>
+                                {/* ========= Bar Search =============== */}
+                                <div className={` ${isSearchBar} transition-all  duration-500 absolute bg-white right-4 border min-w-[350px] border-gray-200 shadow-sm`}>
+                                    <div className="flex items-center justify-between w-full h-[40px]">
+                                        <input type="text" placeholder="Search "  className="outline-none text-sm block px-3 flex-1"/>
+                                        <button className="flex items-center justify-center h-full w-[40px] bg-gray-200">
+                                             <FaSearch className="text-gray-800"/>
+                                        </button>
+                                    </div>
+                                </div>
                             </li>
+                            {/* ========== CART USER ================== */}
                             <li className="cursor-pointer relative mx-2">
                                 <button
-                                    className="block ralative"
+                                    className="block ralative  hover:text-red-500 transition-all duration-150 ease-linear"
                                     onClick={() => {
                                         funShowBasket();
                                     }}
                                 >
-                                    <FaShoppingCart size={24} />
+                                    <FaShoppingCart size={20} />
                                     <div className="absolute top-[-3px] flex items-center justify-center font-semibold right-[-8px] bg-red-500 rounded-full w-[15px] text-[8px] text-white h-[15px]">
                                         <span className="">0</span>
                                     </div>
                                 </button>
+                                {/* ============= Cart Components =============  */}
                                 <div
                                     className={`bg-white absolute transition-all ease-in-out duration-500 ${showBasket} right-[0px] z-30`}
                                 >
@@ -185,7 +235,6 @@ const Navbar = () => {
                                                 <FaTrash size={12} />
                                             </span>
                                         </li>
-                                        
                                     </ul>
                                     <div className="p-2 border-t-0 border border-gray-200">
                                         <div className="flex mb-0.5  items-center justify-between">
@@ -223,7 +272,7 @@ const Navbar = () => {
                                             </span>
                                         </div>
                                         <div className="pt-5 text-center">
-                                            <Link to={'/cart'}>
+                                            <Link to={"/cart"}>
                                                 <button className="px-10 py-2 bg-black text-sm text-white">
                                                     View Cart
                                                 </button>
@@ -232,13 +281,39 @@ const Navbar = () => {
                                     </div>
                                 </div>
                             </li>
-                            <li className="cursor-pointer mx-1">
-                                <FaRegUserCircle size={24} />
+                            <li className="mx-1">
+                                <div className="relative">
+                                    <button className="block hover:text-red-500 transition-all duration-150 ease-linear user" >
+                                    <FaRegUserCircle size={20} />
+                                    </button>
+                                    <div className="cart-user cursor-pointer bg-white border border-gray-200 p-2 min-w-[200px] ">
+                                        <ul className="text-sm ">
+                                            <li className="my-1">
+                                                <button className="hover:text-red-500 transition-all duration-150 ease-linear" onClick={togglerLogin}>
+                                                    Sign In
+                                                </button>
+                                            </li>
+                                            <li className="my-1">
+                                                <button className="hover:text-red-500 transition-all duration-150 ease-linear" onClick={togllerRegister}>
+                                                    Register
+                                                </button>
+                                            </li>
+                                            <li className="my-1">
+                                                <button className="hover:text-red-500 transition-all duration-150 ease-linear">
+                                                    My Account
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
+            
+            <Modal  Form={ isLogin ? <FormLogin/> : <FormRegister/>} stateModal={isModal} closeModal={closeModal}/>
+
         </div>
     );
 };

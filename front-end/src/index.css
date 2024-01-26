@@ -2,9 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-.open {
-
+/* ======= Costumize Cart User ========== */
+.user:hover + .cart-user,
+.cart-user:hover {
+    top: calc(100% + 20px);
+    opacity: 1;
+    visibility: visible;
 }
-.close {
+.cart-user {
+    position: absolute;
+    top: calc(100% + 40px);
+    right: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    z-index: 40;
+}
+/* .slick-list{
+    width: 80%;
+    margin: auto;
+    padding: 20px 0;
+} */
+.slick-slide > div {
+    margin: 0 10px;
 
 }

@@ -8,7 +8,11 @@ export default {
     extend: {
       transitionProperty: {
         'height': ['height'],
+      },
+      colors : {
+        primary : '#F2F0F1'
       }
+
     },
     fontFamily: {
       'Poppins': ['Poppins'],
