@@ -14,7 +14,7 @@ import "swiper/css";
 const Reviews = () => {
     return (
         <section>
-            <div className="container mx-auto w-[80%] py-[80px]">
+            <div className="container mx-auto w-[80%] py-[80px] mb-[100px]">
                 <div className="flex items-center justify-between">
                     <h1 className="text-[30px] font-bold lg:text-[40px]">
                         OUR HAPPY CUSTOMERS
